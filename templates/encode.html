@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Imcryption - Encode
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="page-title">Hide Your Message in Image</h1>
+        <form class="my-5" method="post">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            
+                            
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div class="row align-items-center my-2">
+                <div class="col-12 col-md-4">
+                    <h4 class="form-label">Your Message</h4>
+                </div>
+                <div class="col-12 col-md-8">
+                    <input type="text" class="form-input" name="message" id="message" />
+                </div>
+            </div>
+            <div class="row align-items-center my-2">
+                <div class="col-12 col-md-4">
+                    <h4 class="form-label">Your Image</h4>
+                </div>
+                <div class="col-12 col-md-8">
+                    <input type="file" class="form-input" name="image" id="image" />
+                </div>
+            </div>
+            <div class="my-4" style="text-align: right; margin-right: 15px;">
+                <button type="submit" class="btn btn-outline-dark">Return Encoded Image</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
