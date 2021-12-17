@@ -11,10 +11,12 @@ def index_page():
 
 @app.route('/encode', methods=['GET','POST'])
 def encode_page():
-    
+    print(request.form)
     if request.method == 'POST':
         msg = request.form['message']
         img = request.form['image']
+
+        print(msg, img)
 
         if(msg == ''):
             flash(f'Message Cannot be Empty', category='danger')
