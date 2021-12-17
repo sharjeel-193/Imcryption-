@@ -11,17 +11,18 @@ def index_page():
 
 @app.route('/encode', methods=['GET','POST'])
 def encode_page():
-    print(request.form)
+    msg = ''
+    img = ''
     if request.method == 'POST':
+        # print({'Request': request.form})
         msg = request.form['message']
-        img = request.form['image']
+        img = request.files['image']
 
-        print(msg, img)
+        # print(msg, img)
+        imgShow = Image.open(img)
+        imgShow.convert('L').show()
 
-        if(msg == ''):
-            flash(f'Message Cannot be Empty', category='danger')
-        
-        # return render_template('encode.html')
-        
-    return render_template('encode.html')
+        return render_template('encode.html', enc_img='https://yt3.ggpht.com/ytc/AKedOLQhCqLTkEGQeSzNuaSndU18yVP8hqtaW-zJ4-ylRlw=s900-c-k-c0x00ffffff-no-rj')
+    else:   
+        return render_template('encode.html')
         

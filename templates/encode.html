@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+    
     <div class="container">
         <h1 class="page-title">Hide Your Message in Image</h1>
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -12,13 +13,12 @@
                     {% for category, message in messages %}
                         <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
                             {{ message }}
-                            
-                            
                         </div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-        <form class="my-5" method="post" enctype="multipart/form-data">
+
+        <form class="my-5" method="post" action="/encode" enctype="multipart/form-data" id="encodeForm">
             
             <div class="row align-items-center my-2">
                 <div class="col-12 col-md-4">
@@ -37,8 +37,14 @@
                 </div>
             </div>
             <div class="my-4" style="text-align: right; margin-right: 15px;">
-                <button type="submit" class="btn btn-outline-dark">Return Encoded Image</button>
+                <button type="submit" class="btn btn-outline-dark" id="send">Return Encoded Image</button>
             </div>
         </form>
+        {% if enc_img %}
+            <h2>
+                {{enc_img}}
+            </h2>
+            <!-- <img src="{{enc_img}}" /> -->
+        {% endif %}
     </div>
 {% endblock %}
