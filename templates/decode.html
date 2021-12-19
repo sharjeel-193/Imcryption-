@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Imcryption - Decode
+{% endblock %}
+
+{% block content %}
+    
+    <div class="container">
+        <h1 class="page-title">Unhide Message from Image</h1>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+        <form class="my-5" method="post" enctype="multipart/form-data" id="decodeForm">
+            
+            <div class="row align-items-center my-2">
+                <div class="col-12 col-md-4">
+                    <h4 class="form-label">Encoded Image</h4>
+                </div>
+                <div class="col-12 col-md-8">
+                    <input type="file" class="form-input" name="encImg" id="encImg" accept="image/*" />
+                </div>
+            </div>
+            <div class="my-4" style="text-align: right; margin-right: 15px;">
+                <button type="submit" class="btn btn-outline-dark" id="send">Return Hidden Message</button>
+            </div>
+        </form>
+        {% if hidMsg %}
+            <h2 class="page-title">
+                Hidden Message
+            </h2>
+
+            <p>{{hidMsg}}</p>
+            
+        {% endif %}
+    </div>
+{% endblock %}

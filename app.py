@@ -46,7 +46,24 @@ def encode_page():
         
     else:   
         return render_template('encode.html')
-        
+
+@app.route('/decode', methods=['GET','POST'])
+def decode_page():
+    img = ''
+    if request.method =='POST':
+        img = request.files['encImg']
+        if(img.filename == ''):
+            flash('Message and Image is Must', category='danger')
+            return redirect(request.url)
+        if img and allowed_file(img.filename):
+            return render_template('decode.html', hidMsg='Love You')
+        else:
+            flash('Allowed image types are - png, jpg, jpeg, gif', category='danger')
+            return redirect(request.url)
+    else:
+        return render_template('decode.html')
+
+
 @app.route('/display/<filename>')
 def display_image(filename):
     return redirect(url_for('static', filename='uploads/' + filename), code=301)
