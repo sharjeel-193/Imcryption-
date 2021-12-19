@@ -18,7 +18,7 @@
                 {% endif %}
             {% endwith %}
 
-        <form class="my-5" method="post" action="/encode" enctype="multipart/form-data" id="encodeForm">
+        <form class="my-5" method="post" enctype="multipart/form-data" id="encodeForm">
             
             <div class="row align-items-center my-2">
                 <div class="col-12 col-md-4">
@@ -40,11 +40,12 @@
                 <button type="submit" class="btn btn-outline-dark" id="send">Return Encoded Image</button>
             </div>
         </form>
-        {% if enc_img %}
-            <h2>
-                {{enc_img}}
+        {% if newFile %}
+            <h2 class="page-title">
+                Encoded Image
             </h2>
-            <!-- <img src="{{enc_img}}" /> -->
+            <a href="{{ url_for('download', filename=newFile) }}" class="btn btn-outline-dark">Download</a>
+            <img src="{{ url_for('display_image', filename=newFile) }}" class="img-fluid my-4">
         {% endif %}
     </div>
 {% endblock %}

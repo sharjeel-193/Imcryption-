@@ -1,9 +1,23 @@
-from  flask import Flask, render_template, request, flash
+from  flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
 from PIL import Image
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
+
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key = "super secret key"
+
+UPLOAD_FOLDER = 'static/uploads/'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+ 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+     
+
 
 @app.route('/')
 def index_page():
@@ -14,15 +28,36 @@ def encode_page():
     msg = ''
     img = ''
     if request.method == 'POST':
-        # print({'Request': request.form})
         msg = request.form['message']
         img = request.files['image']
 
-        # print(msg, img)
-        imgShow = Image.open(img)
-        imgShow.convert('L').show()
+        if img.filename=='' or msg=='':
+            flash('Message and Image is Must', category='danger')
+            return redirect(request.url)
 
-        return render_template('encode.html', enc_img='https://yt3.ggpht.com/ytc/AKedOLQhCqLTkEGQeSzNuaSndU18yVP8hqtaW-zJ4-ylRlw=s900-c-k-c0x00ffffff-no-rj')
+        if img and allowed_file(img.filename):
+            file_name = secure_filename(img.filename)
+            newImg = Image.open(img).convert('L')
+            newImg.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+            return render_template('encode.html', newFile=file_name)
+        else:
+            flash('Allowed image types are - png, jpg, jpeg, gif', category='danger')
+            return redirect(request.url)
+        
     else:   
         return render_template('encode.html')
         
+@app.route('/display/<filename>')
+def display_image(filename):
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+@app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    # print(app.root_path)
+    full_path = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'])
+    # print(full_path)
+    return send_from_directory(full_path, filename)
+
+
+if __name__ == "__main__":
+    app.run()
