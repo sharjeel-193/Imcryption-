@@ -2,6 +2,7 @@ from  flask import Flask, render_template, request, flash, redirect, url_for, se
 from PIL import Image
 from werkzeug.utils import secure_filename
 import os
+import utils
 
 app = Flask(__name__)
 
@@ -36,10 +37,13 @@ def encode_page():
             return redirect(request.url)
 
         if img and allowed_file(img.filename):
-            file_name = secure_filename(img.filename)
-            newImg = Image.open(img).convert('L')
+            file_arr = img.filename.split('.')
+            # print(file_arr)
+            file_name = secure_filename(file_arr[0]+'.png')
+            newImg = utils.encodeMsgintoImg(img, msg)
             newImg.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
             return render_template('encode.html', newFile=file_name)
+            # return render_template('encode.html')
         else:
             flash('Allowed image types are - png, jpg, jpeg, gif', category='danger')
             return redirect(request.url)
@@ -56,7 +60,9 @@ def decode_page():
             flash('Message and Image is Must', category='danger')
             return redirect(request.url)
         if img and allowed_file(img.filename):
-            return render_template('decode.html', hidMsg='Love You')
+            msg = utils.decodeMsgFromImg(img)
+            print(msg)
+            return render_template('decode.html', hidMsg=msg)
         else:
             flash('Allowed image types are - png, jpg, jpeg, gif', category='danger')
             return redirect(request.url)
