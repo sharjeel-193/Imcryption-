@@ -5,18 +5,32 @@
 {% endblock %}
 
 {% block content %}
+
+    <div id="passwordModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="passwordModal" aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-centered" role="centered" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Enter PIN to access Hidden Message</h5>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="password" id="pincode" class="form-input mx-auto" placeholder="Enter PIN Here" minlength="4" maxlength="4" pattern="[0-9]*" inputmode="numeric" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="decode_btn">Show Message</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="container">
+        
         <h1 class="page-title">Unhide Message from Image</h1>
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+        <div class="alert alert-danger hide alert-dismissible fade" role="alert" id="decodeFormAlert">
+            
+        </div>
 
         <form class="my-5" method="post" enctype="multipart/form-data" id="decodeForm">
             
@@ -29,9 +43,13 @@
                 </div>
             </div>
             <div class="my-4" style="text-align: right; margin-right: 15px;">
-                <button type="submit" class="btn form-btn" id="send">Return Hidden Message</button>
+                <!-- <button type="submit" class="btn form-btn" id="send">Return Hidden Message</button> -->
+                <!-- <button class="btn form-btn"  data-toggle="modal" data-target="#passwordModal">Return Hidden Message</button> -->
             </div>
         </form>
+        <div class="my-4" style="text-align: right; margin-right: 15px;">
+            <button class="btn form-btn" data-bs-toggle="modal" data-bs-target="#passwordModal" >Return Hidden Message</button>
+        </div>
         <img src="https://c.tenor.com/tEBoZu1ISJ8AAAAC/spinning-loading.gif" id="loader" class="mx-auto"/>
         <div id="hidMsgBox">
             <h2 class="page-title">

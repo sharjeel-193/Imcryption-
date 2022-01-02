@@ -8,15 +8,9 @@
     
     <div class="container">
         <h1 class="page-title">Hide Your Message in Image</h1>
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+        <div class="alert alert-danger hide alert-dismissible fade" role="alert" id="encodeFormAlert">
+            
+        </div>
 
         <form class="my-5" method="post" enctype="multipart/form-data" id="encodeForm">
             
@@ -57,6 +51,14 @@
                 </div>
                 <div class="col-12 col-md-8">
                     <input type="file" class="form-input" name="audio" id="audio" accept="audio/*" />
+                </div>
+            </div>
+            <div class="row align-items-center my-2">
+                <div class="col-12 col-md-4">
+                    <h4 class="form-label">PIN Code (4 Digit)</h4>
+                </div>
+                <div class="col-12 col-md-8">
+                    <input class="form-input" type="password" id="pincode" name="pincode" maxlength="4" minlength="4"  />
                 </div>
             </div>
             <div class="my-4" style="text-align: right; margin-right: 15px;">

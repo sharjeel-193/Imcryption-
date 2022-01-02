@@ -57,7 +57,7 @@ def modifyBit( n,  p,  b):
     mask = 1 << p
     return (n & ~mask) | ((b << p) & mask)
 
-def imageManipulation(img, input):
+def imageManipulation(img, input, key):
 
     # img = cv2.imread("lena.png")
     # blue, green, red = cv2.split(img)
@@ -67,6 +67,7 @@ def imageManipulation(img, input):
     print({'Shape': img_shape})
 
     flat_img = newImgArr.reshape(newImgArr.shape[0]*newImgArr.shape[1], newImgArr.shape[2] )
+    flat_img = lock(key,flat_img)
 
     # print(newImgArr)
     count = 0
@@ -107,10 +108,10 @@ def imageManipulation(img, input):
     return Image.fromarray(newImgArr)
 
 
-def encodeMsgintoImg(img, msg):
+def encodeMsgintoImg(img, msg, key):
     print({'Size of Message': len(msg)})
     encMsg = encrypt_msg(msg)
-    encImg = imageManipulation(img, encMsg)
+    encImg = imageManipulation(img, encMsg, key)
     # encImg.save('enc_img.png')
     return encImg
 
@@ -159,6 +160,7 @@ def decrypt_msg(encMsg):
     decode_msg = decodeString(dehashed_msg)
     return decode_msg
 
+
 def extractingMessage(img):
 
     photo= Image.open(img)
@@ -202,6 +204,64 @@ def decodeMsgFromImg(img):
 
 
 # decodeMsgFromImg('enc_img.png')
+
+def get_lock(img):
+  photo= Image.open(img)
+  newImgArr = np.asarray(photo).copy()
+  img_shape = newImgArr.shape
+  print({'Shape': img_shape})
+
+  flat_img = newImgArr.reshape(newImgArr.shape[0]*newImgArr.shape[1], newImgArr.shape[2])
+  key = []
+
+  for i in range(len(flat_img)-8, len(flat_img)-1, 2):
+    temp = decimalToBinary(int(flat_img[i][0]))
+    number = temp[len(temp)-1]
+    temp = decimalToBinary(int(flat_img[i][1]))
+    number = number + temp[len(temp)-1]
+    temp = decimalToBinary(int(flat_img[i+1][0]))
+    number = number + temp[len(temp)-1]
+    temp = decimalToBinary(int(flat_img[i+1][1]))
+    number = number + temp[len(temp)-1]
+    temp = decimalToBinary(int(flat_img[i+1][2]))
+    number = number + temp[len(temp)-1]
+
+    value = int(number,2)
+    # print(value)
+
+    key.append(value)
+  print(key)
+      
+  return key
+
+def lock(pin,flat_img):
+  count = 0
+  for i in range(len(flat_img)-8, len(flat_img)-1, 2):
+      letter_binary = decimalToBinary(int(pin[count]))
+      if len(letter_binary) == 1:
+          temp = '0000'
+          letter_binary = temp + letter_binary
+      elif len(letter_binary) == 2:
+          temp = '000'
+          letter_binary = temp + letter_binary
+      elif len(letter_binary) == 3:
+          temp = '00'
+          letter_binary = temp + letter_binary
+      elif len(letter_binary) == 4:
+          temp = '0'
+          letter_binary = temp + letter_binary
+
+      flat_img[i][0] = modifyBit(flat_img[i][0], 0, int(letter_binary[0],10))
+      flat_img[i][1] = modifyBit(flat_img[i][1], 0, int(letter_binary[1],10))
+      flat_img[i+1][0] = modifyBit(flat_img[i+1][0], 0, int(letter_binary[2],10))
+      flat_img[i+1][1] = modifyBit(flat_img[i+1][1], 0, int(letter_binary[3],10))
+      flat_img[i+1][2] = modifyBit(flat_img[i+1][2], 0, int(letter_binary[4],10))
+      count = count + 1
+
+  return flat_img
+
+
+
 
 
 
