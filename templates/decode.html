@@ -32,13 +32,14 @@
                 <button type="submit" class="btn form-btn" id="send">Return Hidden Message</button>
             </div>
         </form>
-        {% if hidMsg %}
+        <img src="https://c.tenor.com/tEBoZu1ISJ8AAAAC/spinning-loading.gif" id="loader" class="mx-auto"/>
+        <div id="hidMsgBox">
             <h2 class="page-title">
                 Hidden Message
             </h2>
-
-            <p>{{hidMsg}}</p>
-            
-        {% endif %}
+    
+            <p id="hidMsg"></p>
+        </div>
+        <script src="{{ url_for('static',filename='javascript/decode.js') }}"></script>
     </div>
 {% endblock %}

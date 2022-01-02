@@ -1,9 +1,10 @@
-from  flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
+from  flask import Flask, json, render_template, request, flash, redirect, url_for, send_from_directory, jsonify
 from PIL import Image
 from werkzeug.utils import secure_filename
 import os
 import utils
 import functions
+import speech_recognition as sr
 
 app = Flask(__name__)
 
@@ -25,32 +26,60 @@ def allowed_file(filename):
 def index_page():
     return render_template('home.html')
 
+
+@app.route('/send_encode_form', methods=['POST'])
+def send_Encode_form(request):
+    print(request.form)
+    print(request.files)
+    return jsonify({'msg': 'SUCCESSSFUL'})
+
 @app.route('/encode', methods=['GET','POST'])
 def encode_page():
     msg = ''
     img = ''
+    audioFile = ''
     if request.method == 'POST':
-        msg = request.form['message']
+        useAudio = request.form['use_audio']
         img = request.files['image']
+        print(request.form)
 
-        if img.filename=='' or msg=='':
-            flash('Message and Image is Must', category='danger')
-            return redirect(request.url)
-
-        if img and allowed_file(img.filename):
-            file_arr = img.filename.split('.')
-            # print(file_arr)
-            file_name = secure_filename(file_arr[0]+'.png')
-            newImg = functions.encodeMsgintoImg(img, msg)
-            newImg.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
-            return render_template('encode.html', newFile=file_name)
-            # return render_template('encode.html')
+        if(useAudio == 'true'):
+            audioFile = request.files['audio']
+            recognizer = sr.Recognizer()
+            audio_file = sr.AudioFile(audioFile)
+            with audio_file as src:
+                audio_data = recognizer.record(src)
+            transcript = recognizer.recognize_google(audio_data, key=None)
+            print(transcript)
+            return render_template('encode.html')
         else:
-            flash('Allowed image types are - png, jpg, jpeg, gif', category='danger')
-            return redirect(request.url)
+            msg = request.form['message']
+            # return jsonify({'message': msg})
+            if img.filename=='' or msg=='':
+                return jsonify({'error': 'Please fill in all fields'})
+
+            if img and allowed_file(img.filename):
+                file_arr = img.filename.split('.')
+                # print(file_arr)
+                file_name = secure_filename(file_arr[0]+'.png')
+                newImg = functions.encodeMsgintoImg(img, msg)
+                newImg.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+                return jsonify({'fileName': file_name})
+            else:
+                return jsonify({'error':'Allowed image types are - png, jpg, jpeg, gif'})
         
-    else:   
+    else: 
         return render_template('encode.html')
+    #     if(useAudio != None):
+    #         audioFile = request.files['audio']
+    #         recognizer = sr.Recognizer()
+    #         audio_file = sr.AudioFile(audioFile)
+    #         with audio_file as src:
+    #             audio_data = recognizer.record(src)
+    #         transcript = recognizer.recognize_google(audio_data, key=None)
+    #         print(transcript)
+    #         return render_template('encode.html')
+    
 
 @app.route('/decode', methods=['GET','POST'])
 def decode_page():
@@ -58,15 +87,15 @@ def decode_page():
     if request.method =='POST':
         img = request.files['encImg']
         if(img.filename == ''):
-            flash('Message and Image is Must', category='danger')
-            return redirect(request.url)
+            # flash('Message and Image is Must', category='danger')
+            return jsonify({'error': 'ERROR'})
         if img and allowed_file(img.filename):
             msg = functions.decodeMsgFromImg(img)
             print(msg)
-            return render_template('decode.html', hidMsg=msg)
+            return jsonify({'message': msg})
         else:
-            flash('Allowed image types are - png, jpg, jpeg, gif', category='danger')
-            return redirect(request.url)
+            # flash('Allowed image types are - png, jpg, jpeg, gif', category='danger')
+            return jsonify({'error': 'Allowed image types are - png, jpg, jpeg, gif'})
     else:
         return render_template('decode.html')
 
