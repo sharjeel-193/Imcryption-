@@ -47,10 +47,14 @@
             
             <div class="row align-items-center my-2">
                 <div class="col-12 col-md-4">
-                    <h4 class="form-label">Your Audio File</h4>
+                    <h4 class="form-label">Your Audio </h4>
                 </div>
                 <div class="col-12 col-md-8">
-                    <input type="file" class="form-input" name="audio" id="audio" accept="audio/*" />
+                    <!-- <input type="file" class="form-input" name="audio" id="audio" capture accept="audio/*" /> -->
+                    <button class="btn btn-dark"><i class="fas fa-microphone" id="start-record-btn"></i> Record</button>
+                    <button class="btn btn-dark"><i class="fas fa-microphone" id="pause-record-btn"></i> Stop</button>
+                    <p id="recording-instructions">Press the <strong>Start Recognition</strong> button and allow access.</p>
+                    <textarea id="#note-textarea"></textarea>
                 </div>
             </div>
             <div class="row align-items-center my-2">
@@ -67,7 +71,9 @@
         </form>
         <img src="https://c.tenor.com/tEBoZu1ISJ8AAAAC/spinning-loading.gif" id="loader" class="mx-auto"/>
         <img src="" class="img-fluid my-4" id="encoded_img" >
+
         <script src="{{ url_for('static',filename='javascript/encode.js') }}"></script>
+        <script src="{{ url_for('static',filename='javascript/recorder.js') }}"></script>
             
             
     </div>

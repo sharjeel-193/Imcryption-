@@ -10,7 +10,7 @@ const loader = document.querySelector('#loader')
 const alert = document.querySelector('#encodeFormAlert')
 const pincode = document.querySelector('#pincode')
 
-audio.disabled = true
+// audio.disabled = true
 loader.style.display = 'none'
 
 useAudio.addEventListener('change', (event) => {
@@ -81,3 +81,4 @@ const sendDataToModal = async (formData) => {
         encodeImg.src =  `/static/uploads/${result.fileName}`
     }
 }
+
