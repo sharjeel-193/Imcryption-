@@ -9,7 +9,7 @@ catch(e) {
 }
 
 
-var noteTextarea = $('#note-textarea');
+var noteTextarea = document.querySelector('#note-textarea')
 var instructions = $('#recording-instructions');
 var notesList = $('ul#notes');
 
@@ -48,7 +48,7 @@ recognition.onresult = function(event) {
 
   if(!mobileRepeatBug) {
     noteContent += transcript;
-    noteTextarea.val(noteContent);
+    // noteTextarea.val(noteContent);
   }
 };
 
@@ -81,18 +81,18 @@ $('#start-record-btn').on('click', function(e) {
 });
 
 
-$('#pause-record-btn').on('click', function(e) {
-  console.log('Recording Stopped')
-  recognition.stop();
-  instructions.text('Voice recognition Stopped.');
-});
+// $('#pause-record-btn').on('click', function(e) {
+//   console.log('Recording Stopped')
+//   recognition.stop();
+//   instructions.text('Voice recognition Stopped.');
+// });
 
 // Sync the text inside the text area with the noteContent variable.
-noteTextarea.on('input', function() {
-  noteContent = $(this).val();
-})
+// noteTextarea.on('input', function() {
+//   noteContent = $(this).val();
+// })
 
-$('#save-note-btn').on('click', function(e) {
+$('#pause-record-btn').on('click', function(e) {
   recognition.stop();
 
   if(!noteContent.length) {
@@ -106,7 +106,7 @@ $('#save-note-btn').on('click', function(e) {
     // Reset variables and update UI.
     noteContent = '';
     renderNotes(getAllNotes());
-    noteTextarea.val('');
+    // noteTextarea.val('');
     instructions.text('Note saved successfully.');
   }
       
@@ -177,7 +177,10 @@ function renderNotes(notes) {
 
 
 function saveNote(dateTime, content) {
-  localStorage.setItem('note-' + dateTime, content);
+  console.log('In the Data')
+  console.log(content)
+  localStorage.setItem('note', content);
+  noteTextarea.innerHTML = content
 }
 
 

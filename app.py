@@ -124,16 +124,7 @@ def download(filename):
     # print(full_path)
     return send_from_directory(full_path, filename)
 
-@app.route('/speech_To_text', methods=['POST'])
-def speech_to_text():
-    print(request.files)
-    audioFile = request.files['audio']
-    recognizer = sr.Recognizer()
-    audio_file = sr.AudioFile(audioFile)
-    with audio_file as src:
-        audio_data = recognizer.record(src)
-    transcript = recognizer.recognize_google(audio_data, key=None)
-    return jsonify({'transcript': transcript})
+
 
 if __name__ == "__main__":
     app.run()

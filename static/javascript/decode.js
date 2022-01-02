@@ -9,6 +9,7 @@ const msgBox = document.querySelector('#hidMsgBox')
 const decodeBtn = document.querySelector('#decode_btn')
 const pincode = document.querySelector('#pincode')
 const alert = document.querySelector('#decodeFormAlert')
+const passModal = document.querySelector('#passwordModal')
 
 loader.style.display = 'none'
 msgBox.style.display = 'none'
@@ -30,6 +31,7 @@ decodeBtn.addEventListener('click', async () => {
         alert.classList.remove('hide')
         alert.classList.add('show')
         alert.innerHTML = 'Please Make Sure to Fill All Fields'
+        passModal.dispose()
     }
     
 })

@@ -36,28 +36,21 @@
                     </div>
                 </div>
             </div>
-            <div class="row align-items-center my-2">
-                <div class="col-12 col-md-4">
-                    <h4 class="form-label">Your Message</h4>
-                </div>
-                <div class="col-12 col-md-8">
-                    <input type="text" class="form-input" name="message" id="message" />
-                </div>
+            <div class="row align-items-center my-2" id="textPart">
+                <h4 class="form-label">Your Message</h4>
+                <input type="text" class="form-input" name="message" id="message" placeholder="Type Your Message Here"/>
             </div>
             
-            <div class="row align-items-center my-2">
-                <div class="col-12 col-md-4">
-                    <h4 class="form-label">Your Audio </h4>
-                </div>
-                <div class="col-12 col-md-8">
-                    <!-- <input type="file" class="form-input" name="audio" id="audio" capture accept="audio/*" /> -->
-                    <button class="btn btn-dark"><i class="fas fa-microphone" id="start-record-btn"></i> Record</button>
-                    <button class="btn btn-dark"><i class="fas fa-microphone" id="pause-record-btn"></i> Stop</button>
-                    <p id="recording-instructions">Press the <strong>Start Recognition</strong> button and allow access.</p>
-                    <textarea id="#note-textarea"></textarea>
+            <div class="row align-items-center my-2" id="audioPart">
+                <h4 class="form-label">Your Audio </h4>
+                <div class="w-100">
+                    <button class="btn btn-dark" type="button" id="start-record-btn"><i class="fas fa-microphone" ></i> Record</button>
+                    <button class="btn btn-dark" type="button" id="pause-record-btn"><i class="fas fa-microphone" ></i> Stop</button>
+                    <p id="recording-instructions">Press the <strong>Start Record</strong> button and allow access.</p>
+                    <textarea id="note-textarea" class="form-input"></textarea>
                 </div>
             </div>
-            <div class="row align-items-center my-2">
+            <div class="row align-items-center mt-5 mb-2">
                 <div class="col-12 col-md-4">
                     <h4 class="form-label">PIN Code (4 Digit)</h4>
                 </div>
@@ -66,9 +59,13 @@
                 </div>
             </div>
             <div class="my-4" style="text-align: right; margin-right: 15px;">
-                <button type="submit" class="btn form-btn" id="send">Return Encoded Image</button>
+                <!-- <button type="submit" class="btn form-btn" id="encode_btn">Return Encoded Image</button> -->
             </div>
         </form>
+        <div class="my-4" style="text-align: right; margin-right: 15px;">
+            <button class="btn form-btn" id="encode_btn">Return Encoded Image</button>
+        </div>
+        
         <img src="https://c.tenor.com/tEBoZu1ISJ8AAAAC/spinning-loading.gif" id="loader" class="mx-auto"/>
         <img src="" class="img-fluid my-4" id="encoded_img" >
 

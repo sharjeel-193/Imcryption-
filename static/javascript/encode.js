@@ -9,30 +9,44 @@ const encodeImg = document.querySelector('#encoded_img')
 const loader = document.querySelector('#loader')
 const alert = document.querySelector('#encodeFormAlert')
 const pincode = document.querySelector('#pincode')
-
+const audioText = document.querySelector('#note-textarea')
+const audioPart = document.querySelector('#audioPart')
+const textPart = document.querySelector('#textPart')
+const encodeBtn = document.querySelector('#encode_btn')
 // audio.disabled = true
 loader.style.display = 'none'
+audioText.readOnly = true
+audioPart.style.display = 'none'
 
 useAudio.addEventListener('change', (event) => {
     if(event.currentTarget.checked){
-        audio.disabled = false
-        message.disabled = true
+        // audio.disabled = false
+        // message.disabled = true
+        audioPart.style.display = 'block'
+        textPart.style.display = 'none'
+        
     } else {
-        audio.disabled = true
-        message.disabled = false
+        // audio.disabled = true
+        // message.disabled = false
+        audioPart.style.display = 'none'
+        textPart.style.display = 'block'
     }
 })
 
-form.addEventListener('submit',async (e) => {
+encodeBtn.addEventListener('click',async () => {
     
-    e.preventDefault()
+    // e.preventDefault()
+    console.log("Form Submission Btn")
     if(useAudio.checked){
-        if(audio.value && image.value & pincode.value){
+        console.log({'Audio Text': audioText.value})
+        console.log({'Image': image.files[0]})
+        console.log({'PIN Cide': pincode.value})
+        if(audioText.value && image.files[0] && pincode.value){
             let formData = new FormData()
             console.log("LOVE YOU")
-            formData.append('use_audio', true)
+            formData.append('use_audio', false)
             formData.append('image', image.files[0])
-            formData.append('audio', audio.files[0])
+            formData.append('message', audioText.value)
             formData.append('pin', pincode.value)
             
             sendDataToModal(formData)

@@ -1,7 +1,8 @@
 
 :root{
-    --primary-color: #2C3531;
-    --secondary-color: #F13C20;
+    --primary-color: #1E3D59;
+    --secondary-color: #FF6E40;
+    --background-color: #EBECF0;
 }
 .top-bar{
     background-color: var(--primary-color);
@@ -76,6 +77,7 @@
     width: 90%;
     margin-left: 0;
     padding: 2%;
+    background-color: var(--background-color);
     border: 1px solid lightgray;
     border-radius: 5px;
 }
@@ -97,4 +99,12 @@
     color: var(--secondary-color);
     font-weight: 600;
     text-shadow: 1px 1px 1px black;
+}
+
+.modal-btn{
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+.modal-btn:hover{
+    color: var(--background-color);
 }
