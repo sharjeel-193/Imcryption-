@@ -3,6 +3,7 @@ from PIL import Image
 from werkzeug.utils import secure_filename
 import os
 import utils
+import functions
 
 app = Flask(__name__)
 
@@ -40,7 +41,7 @@ def encode_page():
             file_arr = img.filename.split('.')
             # print(file_arr)
             file_name = secure_filename(file_arr[0]+'.png')
-            newImg = utils.encodeMsgintoImg(img, msg)
+            newImg = functions.encodeMsgintoImg(img, msg)
             newImg.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
             return render_template('encode.html', newFile=file_name)
             # return render_template('encode.html')
@@ -60,7 +61,7 @@ def decode_page():
             flash('Message and Image is Must', category='danger')
             return redirect(request.url)
         if img and allowed_file(img.filename):
-            msg = utils.decodeMsgFromImg(img)
+            msg = functions.decodeMsgFromImg(img)
             print(msg)
             return render_template('decode.html', hidMsg=msg)
         else:
